@@ -1,6 +1,10 @@
 const LitElement = Object.getPrototypeOf(customElements.get("hui-view"));
 const html = LitElement.prototype.html;
 
+const curDatetime = new Date();
+
+const datetime = curDatetime.getMonth().toString() + curDatetime.getDate().toString() + curDatetime.getFullYear().toString() + curDatetime.getHours().toString() + curDatetime.getMinutes().toString();
+
 const weatherIconsDay = {
   clear: "day",
   "clear-night": "night",
@@ -140,6 +144,7 @@ class WeatherCard extends LitElement {
         ${this._config.forecast !== false
           ? this.renderForecast(stateObj.attributes.forecast)
           : ""}
+        ${this._config.map !== false ? this.renderMap(stateObj) : ""}
       </ha-card>
     `;
   }
@@ -278,6 +283,19 @@ class WeatherCard extends LitElement {
           `
         )}
       </div>
+    `;
+  }
+  
+    renderMap(map) {
+    if (!map || map.length === 0) {
+      return html``;
+    }
+
+    const lang = this.hass.selectedLanguage || this.hass.language;
+
+    this.numberElements++;
+    return html`
+      <img class="weatherMap clear" src="${this._config.mapPath + "?v=" + datetime}" />
     `;
   }
 
@@ -477,6 +495,13 @@ class WeatherCard extends LitElement {
           left: 6em;
           word-wrap: break-word;
           width: 30%;
+        }
+        
+        .weatherMap {
+          position: relative;
+          width: 100%;
+          height: auto;
+          margin-top: 1em;
         }
       </style>
     `;
