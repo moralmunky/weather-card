@@ -42,6 +42,10 @@ export class WeatherCardEditor extends LitElement {
   get _icons() {
     return this._config.icons || "";
   }
+  
+  get _map() {
+    return this._config.map || "";
+  }
 
   get _current() {
     return this._config.current !== false;
@@ -77,6 +81,12 @@ export class WeatherCardEditor extends LitElement {
             label="Icons location"
             .value="${this._icons}"
             .configValue="${"icons"}"
+            @value-changed="${this._valueChanged}"
+          ></paper-input>
+          <paper-input
+            label="Map GIF location"
+            .value="${this._map}"
+            .configValue="${"map"}"
             @value-changed="${this._valueChanged}"
           ></paper-input>
           ${customElements.get("ha-entity-picker")
